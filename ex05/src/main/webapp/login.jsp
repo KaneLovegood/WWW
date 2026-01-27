@@ -6,10 +6,10 @@
 </head>
 <body>
 <h1>Dang nhap</h1> <br>
-<form action="index.jsp" method="post">
-    Ten dang nhap: <input type="text" name="username"> <br>
-    Mat khau: <input type="password" name="password">
-
+<form action="${pageContext.request.contextPath}/login" method="post">
+    Ten dang nhap: <input type="text" name="username" > <br>
+    Mat khau: <input type="password" name="password" >
+    <br>
     <button type="submit">Dang nhap</button>
 </form>
 </body>
