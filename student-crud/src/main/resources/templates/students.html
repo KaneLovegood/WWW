@@ -6,20 +6,47 @@
     <title>Student</title>
 </head>
 <body>
-<table >
-    <tr th:each="s : ${students}" >
+<h2>Danh sách sinh viên</h2>
+
+<p>
+    <a th:href="@{/students/new}">Thêm sinh viên</a>
+</p>
+
+<form method="get" th:action="@{/students}">
+    <input name="keyword" th:value="${keyword}">
+    <button>Search</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <td>Tên</td>
+        <td>Email</td>
+        <td>Tuổi</td>
+        <td>Hành động</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s : ${students}">
         <td th:text="${s.name}"></td>
         <td th:text="${s.email}"></td>
         <td th:text="${s.age}"></td>
         <td>
-            <a th:href="@{/students/delete/{id}(id=${s.id})}">
-                Delete
+            <a th:href="@{/students/edit/{id}(id=${s.id})}">Sửa</a>
+            |
+            <a th:href="@{/students/delete/{id}(id=${s.id})}"
+               onclick="return confirm('Bạn có chắc muốn xoá sinh viên này?');">
+                Xoá
+            </a>
+            |
+            <a th:href="@{/enrollments/student/{id}(id=${s.id})}">
+                Đăng ký môn
             </a>
         </td>
-        <td ><a th:href="@{/students/edit/{id}(id=${s.id})}">edit</a></td>
     </tr>
+    </tbody>
 </table>
-<a th:href="@{/students/new}">Add new</a>
+
 </body>
 <style>
     td {

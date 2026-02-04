@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subject</title>
+</head>
+<body>
+<h2 th:text="'Mon hoc da dang ky: ' + ${student.name}"></h2>
+
+<table>
+    <tr>
+        <td>Mon hoc</td>
+        <td>So tin chi</td>
+        <td>Hoc ky</td>
+    </tr>
+    <tr th:each="e : ${enrollments}">
+        <td th:text="${e.subject.name}"></td>
+        <td th:text="${e.subject.credit}"></td>
+        <td th:text="${e.semester}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -3,7 +3,7 @@ package com.example.student_crud.controller;
 import com.example.student_crud.model.Student;
 import com.example.student_crud.service.StudentService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,49 +19,53 @@ public class StudentController {
         this.service = service;
     }
 
+    // LIST + SEARCH
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("students", service.getAll());
+    public String list(@RequestParam(required = false) String keyword,
+                       Model model) {
+        model.addAttribute("students", service.search(keyword));
+        model.addAttribute("keyword", keyword);
         return "students";
     }
 
+    // ADD
     @GetMapping("/new")
-    public String showForm(Model model) {
+    public String addForm(Model model) {
         model.addAttribute("student", new Student());
         return "student-form";
     }
+
+    // EDIT
     @GetMapping("/edit/{id}")
-    public String showFormEdit(@PathVariable Long id, Model model) {
-        int idInt = id.intValue();
-        Student student = service.getById(idInt);
-        if (student == null) {
-            return "redirect:/students";
-        }
-        model.addAttribute("student", student);
+    public String editForm(@PathVariable Long id, Model model) {
+        model.addAttribute("student", service.getById(id.intValue()));
         return "student-form";
     }
 
-
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        int idInt = id.intValue();
-        service.delete(idInt);
-        return "redirect:/students";
-    }
-
+    // SAVE
     @PostMapping("/save")
-    public String save(
-            @Valid @ModelAttribute("student") Student student,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            return "student-form";
-        }
+    public String save(@ModelAttribute Student student) {
         service.save(student);
         return "redirect:/students";
     }
+
+    // DELETE
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        service.delete(id.intValue());
+        return "redirect:/students";
+    }
+
+    // VIEW SUBJECTS
+    @GetMapping("/{id}/subjects")
+    public String subjects(@PathVariable Long id, Model model) {
+        model.addAttribute("student", service.getById(id.intValue()));
+        model.addAttribute("enrollments",
+                service.getEnrollmentsByStudentId(id));
+        return "student-subjects";
+    }
 }
+
 
 
 
